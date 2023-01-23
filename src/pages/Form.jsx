@@ -30,7 +30,7 @@ function Form() {
     const [errorMessage, setErrorMessage] = useState("Ocurrio un error, intentelo otra vez ")
 
     const [formObject, setFormObject] = useState({
-        IdTipoPersona: "2"
+        IdTipoPersona: 2
     })
 
     const [listOfErrors, setListOfErrors] = useState([])
@@ -176,6 +176,39 @@ function Form() {
         setLoadedAPI(true)
     }
 
+    function onClickTypePersona(type){
+        //Natural
+        if(type !== 1){
+            setFormObject({
+                ...formObject,
+                IdTipoPersona: type,
+                RazonSocial: null,
+                ReprecentanteLegal: null,
+                IdentificacionReprecentanteLegal: null,
+                ActividadEconomica: null,
+            })
+            //Juridic
+        }else{
+            setFormObject({
+                ...formObject,
+                IdTipoPersona: type,
+                IdTipoCedula: null,
+                IdSexo: null,
+                Nombres: null,
+                Apellido: null,
+                FechaNacimiento: null,
+                IdNacionalidad: null,
+                IdEstadoCivil: null,
+                IdProfesion: null,
+                Ocupacion: null,
+            })
+        }
+    }
+
+    function changeInTypePersona(type, typePersona){
+        onClickTypePersona(typePersona);
+    }
+
     function chargeYears(){
         let list = []
         
@@ -226,7 +259,7 @@ function Form() {
                 </div>
                 <div className="w-full h-fit flex flex-wrap content-start relative">
                     <div className={`w-1/4 mb-3 px-3`}>
-                        <p className="input-label">Tipo persona <span className='text-primary font-bold'>*</span></p>
+                        <p className="input-label">Tipo persona<span className='text-primary font-bold'>*</span></p>
                         <div className="flex flex-wrap justify-between items-center">
                         {listOfErrors.includes("") && <p className='text-red-500 font-semibold text-[12px] mt-2'>Campo requerido</p>}
                             {listOfTypePersona.map((type, i)=>{
@@ -234,7 +267,9 @@ function Form() {
                                     <p key={i} className="input-label flex items-center leading-[2px] mr-2">
                                         {type["TipoPersona"]}
                                         <div className="ml-3 w-1/4">
-                                            <div onClick={()=>{ setFormObject({...formObject, IdTipoPersona: type["IdTipoPersona"]}), setIsNatural(type["Tipo"]) }} className="group rounded-full w-5 h-5 border-solid border-[2.2px] p-[0.9px] box-border border-slate-500 overflow-hidden cursor-pointer flex justify-center items-center">
+                                            <div onClick={()=>{ 
+                                                changeInTypePersona(type["Tipo"], type["IdTipoPersona"])
+                                            }} className="group rounded-full w-5 h-5 border-solid border-[2.2px] p-[0.9px] box-border border-slate-500 overflow-hidden cursor-pointer flex justify-center items-center">
                                                 <span className={`rounded-full transition w-full content-none h-full relative ${formObject["IdTipoPersona"] === type["IdTipoPersona"] ? "group-hover:bg-slate-500 bg-orange-700" : "group-hover:bg-orange-500 bg-slate-300"}`}></span>
                                             </div>
                                         </div>
@@ -243,7 +278,7 @@ function Form() {
                             })}
                         </div>
                     </div>
-                    {isNatural === 1 && <div className={`w-1/4 mb-3 px-3`}>
+                    {formObject["IdTipoPersona"] === 2 && <div className={`w-1/4 mb-3 px-3`}>
                         <p className="input-label">Tipo de documento de identidad</p>
                         <select value={formObject["IdTipoCedula"]} onChange={(e)=>{ setFormObject({...formObject, IdTipoCedula: e.target.value})  }} className="form-control">
                             <option value="">Seleccione el tipo de documento de identidad</option>
@@ -255,43 +290,43 @@ function Form() {
                         <input defaultValue={formObject["Identificacion"]} placeholder="Ingrese el número de identificación" onChange={(e)=>{ setFormObject({...formObject, Identificacion: e.target.value}) }} type="text" className="form-control" />
                         {listOfErrors.includes("Identificacion") && <p className='text-red-500 font-semibold text-[12px] mt-2'>Campo requerido</p>}
                     </div>
-                    {isNatural !== 2 && <div className={`w-1/4 mb-3 px-3`}>
+                    {formObject["IdTipoPersona"] !== 1 && <div className={`w-1/4 mb-3 px-3`}>
                         <p className="input-label">Género</p>
                         <select value={formObject["IdSexo"]} onChange={(e)=>{ setFormObject({...formObject, IdSexo: e.target.value})  }} className="form-control">
                             <option value="">Seleccione el género</option>
                             {listOfGenre.map((type, i)=> <option key={i} value={type["IdSexo"]}>{type["Sexo"]}</option> )}
                         </select>
                     </div>}
-                    {isNatural !== 2 && <div className={`w-1/4 mb-3 px-3`}>
+                    {formObject["IdTipoPersona"] !== 1 && <div className={`w-1/4 mb-3 px-3`}>
                         <p className="input-label">Nombre(s) <span className='text-primary font-bold'>*</span></p>
                         <input value={formObject["Nombres"]} placeholder="Ingrese los nombres" onChange={(e)=>{ setFormObject({...formObject, Nombres: e.target.value}) }} type="text" className="form-control" />
                         {listOfErrors.includes("Nombres") && <p className='text-red-500 font-semibold text-[12px] mt-2'>Campo requerido</p>}
                     </div>}
-                    {isNatural !== 2 && <div className={`w-1/4 mb-3 px-3`}>
+                    {formObject["IdTipoPersona"] !== 1 && <div className={`w-1/4 mb-3 px-3`}>
                         <p className="input-label">Apellido(s) </p>
                         <input value={formObject["Apellido"]} placeholder="Ingrese los apellidos" onChange={(e)=>{ setFormObject({...formObject, Apellido: e.target.value}) }} type="text" className="form-control" />
                     </div>}
-                    {isNatural === 2 && <div className={`w-1/4 mb-3 px-3`}>
+                    {formObject["IdTipoPersona"] === 1 && <div className={`w-1/4 mb-3 px-3`}>
                         <p className="input-label">Nombre comercial <span className='text-primary font-bold'>*</span></p>
                         <input value={formObject["RazonSocial"]} placeholder="Ingrese el nombre comercial" onChange={(e)=>{ setFormObject({...formObject, RazonSocial: e.target.value}) }} type="text" className="form-control" />
                         {listOfErrors.includes("RazonSocial") && <p className='text-red-500 font-semibold text-[12px] mt-2'>Campo requerido</p>}
                     </div>}
-                    {isNatural === 2 && <div className={`w-1/4 mb-3 px-3`}>
+                    {formObject["IdTipoPersona"] === 1 && <div className={`w-1/4 mb-3 px-3`}>
                         <p className="input-label">Representante legal <span className='text-primary font-bold'>*</span></p>
                         <input value={formObject["ReprecentanteLegal"]} placeholder="Ingrese el representante legal" onChange={(e)=>{ setFormObject({...formObject, ReprecentanteLegal: e.target.value}) }} type="text" className="form-control" />
                         {listOfErrors.includes("ReprecentanteLegal") && <p className='text-red-500 font-semibold text-[12px] mt-2'>Campo requerido</p>}
                     </div>}
-                    {isNatural === 2 && <div className={`w-1/4 mb-3 px-3`}>
+                    {formObject["IdTipoPersona"] === 1 && <div className={`w-1/4 mb-3 px-3`}>
                         <p className="input-label">Identificacion representante<span className='text-primary font-bold'>*</span></p>
                         <input value={formObject["IdentificacionReprecentanteLegal"]} placeholder="Ingrese la identificacion del representante legal" onChange={(e)=>{ setFormObject({...formObject, IdentificacionReprecentanteLegal: e.target.value}) }} type="text" className="form-control" />
                         {listOfErrors.includes("IdentificacionReprecentanteLegal") && <p className='text-red-500 font-semibold text-[12px] mt-2'>Campo requerido</p>}
                     </div>}
-                    {isNatural === 2 && <div className={`w-1/4 mb-3 px-3`}>
+                    {formObject["IdTipoPersona"] === 1 && <div className={`w-1/4 mb-3 px-3`}>
                         <p className="input-label">Actividad comercial principal <span className='text-primary font-bold'>*</span></p>
                         <input value={formObject["ActividadEconomica"]} placeholder="Ingrese la actividad comercial principal" onChange={(e)=>{ setFormObject({...formObject, ActividadEconomica: e.target.value}) }} type="text" className="form-control" />
                         {listOfErrors.includes("ActividadEconomica") && <p className='text-red-500 font-semibold text-[12px] mt-2'>Campo requerido</p>}
                     </div>}
-                    {isNatural !== 2 && <div className={`w-1/4 mb-3 px-3`}>
+                    {formObject["IdTipoPersona"] !== 1 && <div className={`w-1/4 mb-3 px-3`}>
                         <p className="input-label">Fecha de nacimiento</p>
                         <input value={formObject["FechaNacimiento"]} onChange={(e)=>{ setFormObject({...formObject, FechaNacimiento: e.target.value}) }} type="date" max={maxDateBirth} className="form-control" />
                     </div>}
@@ -314,28 +349,28 @@ function Form() {
                         <input value={formObject["CelularII"]} placeholder="Ingrese el número telefónico" onChange={(e)=>{ setFormObject({...formObject, CelularII: e.target.value}) }} type="phone" className="form-control" />
                         {listOfErrors.includes("CelularII") && <p className='text-red-500 font-semibold text-[12px] mt-2'>Campo requerido</p>}
                     </div>
-                    {isNatural !== 2 && <div className={`w-1/4 mb-3 px-3`}>
+                    {formObject["IdTipoPersona"] !== 1 && <div className={`w-1/4 mb-3 px-3`}>
                         <p className="input-label">Nacionalidad <span className='text-primary font-bold'>*</span></p>
                         <select value={formObject["IdNacionalidad"]} onChange={(e)=>{ setFormObject({...formObject, IdNacionalidad: e.target.value})  }} className="form-control">
                             <option value="">Seleccione la nacionalidad</option>
                             {listOfNationalitys.map((type, i)=> <option key={i} value={type["IdNacionalidad"]}>{type["Nacionalidad"]}</option> )}
                         </select>
                     </div>}
-                    {isNatural !== 2 && <div className={`w-1/4 mb-3 px-3`}>
+                    {formObject["IdTipoPersona"] !== 1 && <div className={`w-1/4 mb-3 px-3`}>
                         <p className="input-label">Estado civil</p>
                         <select value={formObject["IdEstadoCivil"]}  onChange={(e)=>{ setFormObject({...formObject, IdEstadoCivil: e.target.value})  }} className="form-control">
                             <option value="">Seleccione el estado civil</option>
                             {listOfCivilStatus.map((type, i)=> <option key={i} value={type["IdEstadoCivil"]}>{type["EstadoCivil"]}</option> )}
                         </select>
                     </div>}
-                    {isNatural !== 2 && <div className={`w-1/4 mb-3 px-3`}>
+                    {formObject["IdTipoPersona"] !== 1 && <div className={`w-1/4 mb-3 px-3`}>
                         <p className="input-label">Profesión</p>
                         <select value={formObject["IdProfesion"]} onChange={(e)=>{ setFormObject({...formObject, IdProfesion: e.target.value})  }} className="form-control">
                             <option value="">Seleccione la profesión</option>
                             {listOfProfesion.map((type, i)=> <option key={i} value={type["IdProfesion"]}>{type["Profesion"]}</option> )}
                         </select>
                     </div>}
-                    {isNatural !== 2 && <div className={`w-1/4 mb-3 px-3`}>
+                    {formObject["IdTipoPersona"] !== 1 && <div className={`w-1/4 mb-3 px-3`}>
                         <p className="input-label">Ocupación</p>
                         <input value={formObject["Ocupacion"]} placeholder="Ingrese la ocupacion" onChange={(e)=>{ setFormObject({...formObject, Ocupacion: e.target.value}) }} type="text" className="form-control" />
                     </div>}
@@ -425,7 +460,7 @@ function Form() {
             "Direccion"
         ]
 
-        listOfRequiredValues = isNatural === 1 ? listOfNatural : listOfJuridic
+        listOfRequiredValues = formObject["IdTipoPersona"] === 1 ? listOfJuridic : listOfNatural
 
         let Corregimiento = listOfCorregimientos.find((prv)=>( parseInt(prv["IdCorregimiento"]) === parseInt(formObject["IdCorregimiento"]) ))["Corregimiento"]
         let Distrito = listOfDistritos.find((prv)=>( parseInt(prv["IdDistrito"]) === parseInt(formObject["IdDistrito"]) ))["Distrito"]
@@ -455,7 +490,8 @@ function Form() {
 
     //4748
     function manageUpdateEntity(){
-        
+        console.log(listOfTypePersona)
+        console.log(formObject["IdTipoPersona"])
         let object = handleValidationFunction() !== false ? JSON.stringify(handleValidationFunction()) : "error"
 
         if(object !== "error"){
