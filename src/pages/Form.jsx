@@ -79,15 +79,15 @@ function Form() {
     function formatListsOfManzanero(id, type){
         switch (type){
             case "d":
-                let _listOfDistritos = [...listOfDistritosMain].filter((prv)=>( parseInt(prv["IdProvincia"]) === id ))
+                let _listOfDistritos = [...listOfDistritosMain].filter((prv)=>( parseInt(prv["IdProvincia"]) === parseInt(id) ))
                 setFormObject({...formObject, IdProvincia: id})
 
                 setListOfDistritos(_listOfDistritos)
                 break;
             case "c":
-                let _listOfCorregimientos = [...listOfCorregimientosMain].filter((prv)=>( parseInt(prv["IdDistrito"]) === id ))
+                let _listOfCorregimientos = [...listOfCorregimientosMain].filter((prv)=>( parseInt(prv["IdDistrito"]) === parseInt(id) ))
                 setFormObject({...formObject, IdDistrito: id})
-
+                
                 setListOfCorregimientos(_listOfCorregimientos)
                 break;
             default:
@@ -118,6 +118,25 @@ function Form() {
     }
 
     async function chargeAPI(){
+
+        await apiProvider.getDatosFormularioEndPoint("?Tipo=7").then((res)=>{
+            setListOfProvincias(res.data)
+        }).catch((e)=>{
+            console.log(e)
+        })
+        await apiProvider.getDatosFormularioEndPoint("?Tipo=8").then((res)=>{
+            setListOfDistritosMain(res.data)
+            setListOfDistritos(res.data)
+        }).catch((e)=>{
+            console.log(e)
+        })
+        await apiProvider.getDatosFormularioEndPoint("?Tipo=9").then((res)=>{
+            setListOfCorregimientosMain(res.data)
+            setListOfCorregimientos(res.data)
+        }).catch((e)=>{
+            console.log(e)
+        })
+
         await apiProvider.getDatosFormularioEndPoint("?Tipo=1").then((res)=>{
             setListOfGenre(res.data)
         }).catch((e)=>{
@@ -135,24 +154,6 @@ function Form() {
         })
         await apiProvider.getDatosFormularioEndPoint("?Tipo=4").then((res)=>{
             setListOfProfesion(res.data)
-        }).catch((e)=>{
-            console.log(e)
-        })
-
-        await apiProvider.getDatosFormularioEndPoint("?Tipo=7").then((res)=>{
-            setListOfProvincias(res.data)
-        }).catch((e)=>{
-            console.log(e)
-        })
-        await apiProvider.getDatosFormularioEndPoint("?Tipo=8").then((res)=>{
-            setListOfDistritosMain(res.data)
-            setListOfDistritos(res.data)
-        }).catch((e)=>{
-            console.log(e)
-        })
-        await apiProvider.getDatosFormularioEndPoint("?Tipo=9").then((res)=>{
-            setListOfCorregimientosMain(res.data)
-            setListOfCorregimientos(res.data)
         }).catch((e)=>{
             console.log(e)
         })
