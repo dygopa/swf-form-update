@@ -99,14 +99,14 @@ function Form() {
         let query = window.location.search
         if(query){
             apiProvider.getActualizaciondatosaseguradoEndPoint(query).then((res)=>{
-                let dateBirth = moment(res.data[0]["FechaNacimiento"]).format("YYYY-DD-MM").toString()
-                
+                let dateBirth = moment(res.data[0]["FechaNacimiento"], "DD-MM-YYYY").format("YYYY-MM-DD").toString()
                 formatListsOfManzanero(res.data[0]["IdProvincia"], "d")
                 formatListsOfManzanero(res.data[0]["IdDistrito"], "c")
                 setFormObject({
                     ...res.data[0],
                     FechaNacimiento: dateBirth
                 })
+                console.log(formObject)
             }).catch((e)=>{
                 console.log(e)
             })
@@ -125,14 +125,14 @@ function Form() {
             console.log(e)
         })
         await apiProvider.getDatosFormularioEndPoint("?Tipo=8").then((res)=>{
-            setListOfDistritosMain(res.data)
             setListOfDistritos(res.data)
+            setListOfDistritosMain(res.data)
         }).catch((e)=>{
             console.log(e)
         })
         await apiProvider.getDatosFormularioEndPoint("?Tipo=9").then((res)=>{
-            setListOfCorregimientosMain(res.data)
             setListOfCorregimientos(res.data)
+            setListOfCorregimientosMain(res.data)
         }).catch((e)=>{
             console.log(e)
         })
@@ -280,11 +280,12 @@ function Form() {
                         </div>
                     </div>
                     {formObject["IdTipoPersona"] === 2 && <div className={`w-1/4 mb-3 px-3`}>
-                        <p className="input-label">Tipo de documento de identidad</p>
+                        <p className="input-label">Tipo de documento de identidad <span className='text-primary font-bold'>*</span></p>
                         <select value={formObject["IdTipoCedula"]} onChange={(e)=>{ setFormObject({...formObject, IdTipoCedula: e.target.value})  }} className="form-control">
                             <option value="">Seleccione el tipo de documento de identidad</option>
                             {listOfTypeDocument.map((type, i)=> <option key={i} value={type["IdTipoCedula"]}>{type["TipoCedula"]}</option> )}
                         </select>
+                        {listOfErrors.includes("IdTipoCedula") && <p className='text-red-500 font-semibold text-[12px] mt-2'>Campo requerido</p>}
                     </div>}
                     <div className={`w-1/4 mb-3 px-3`}>
                         <p className="input-label">Número de identificación <span className='text-primary font-bold'>*</span></p>
@@ -292,11 +293,12 @@ function Form() {
                         {listOfErrors.includes("Identificacion") && <p className='text-red-500 font-semibold text-[12px] mt-2'>Campo requerido</p>}
                     </div>
                     {formObject["IdTipoPersona"] !== 1 && <div className={`w-1/4 mb-3 px-3`}>
-                        <p className="input-label">Género</p>
+                        <p className="input-label">Género <span className='text-primary font-bold'>*</span></p>
                         <select value={formObject["IdSexo"]} onChange={(e)=>{ setFormObject({...formObject, IdSexo: e.target.value})  }} className="form-control">
                             <option value="">Seleccione el género</option>
                             {listOfGenre.map((type, i)=> <option key={i} value={type["IdSexo"]}>{type["Sexo"]}</option> )}
                         </select>
+                        {listOfErrors.includes("IdSexo") && <p className='text-red-500 font-semibold text-[12px] mt-2'>Campo requerido</p>}
                     </div>}
                     {formObject["IdTipoPersona"] !== 1 && <div className={`w-1/4 mb-3 px-3`}>
                         <p className="input-label">Nombre(s) <span className='text-primary font-bold'>*</span></p>
@@ -304,8 +306,9 @@ function Form() {
                         {listOfErrors.includes("Nombres") && <p className='text-red-500 font-semibold text-[12px] mt-2'>Campo requerido</p>}
                     </div>}
                     {formObject["IdTipoPersona"] !== 1 && <div className={`w-1/4 mb-3 px-3`}>
-                        <p className="input-label">Apellido(s) </p>
+                        <p className="input-label">Apellido(s) <span className='text-primary font-bold'>*</span></p>
                         <input value={formObject["Apellido"]} placeholder="Ingrese los apellidos" onChange={(e)=>{ setFormObject({...formObject, Apellido: e.target.value}) }} type="text" className="form-control" />
+                        {listOfErrors.includes("Apellido") && <p className='text-red-500 font-semibold text-[12px] mt-2'>Campo requerido</p>}
                     </div>}
                     {formObject["IdTipoPersona"] === 1 && <div className={`w-1/4 mb-3 px-3`}>
                         <p className="input-label">Nombre comercial <span className='text-primary font-bold'>*</span></p>
@@ -328,17 +331,18 @@ function Form() {
                         {listOfErrors.includes("ActividadEconomica") && <p className='text-red-500 font-semibold text-[12px] mt-2'>Campo requerido</p>}
                     </div>}
                     {formObject["IdTipoPersona"] !== 1 && <div className={`w-1/4 mb-3 px-3`}>
-                        <p className="input-label">Fecha de nacimiento</p>
-                        <input value={formObject["FechaNacimiento"]} onChange={(e)=>{ setFormObject({...formObject, FechaNacimiento: e.target.value}) }} type="date" max={maxDateBirth} className="form-control" />
+                        <p className="input-label">Fecha de nacimiento <span className='text-primary font-bold'>*</span></p>
+                        <input defaultValue={formObject["FechaNacimiento"]} onChange={(e)=>{ setFormObject({...formObject, FechaNacimiento: e.target.value}) }} type="date" className="form-control" />
+                        {listOfErrors.includes("FechaNacimiento") && <p className='text-red-500 font-semibold text-[12px] mt-2'>Campo requerido</p>}
                     </div>}
                     <div className={`w-1/4 mb-3 px-3`}>
-                        <p className="input-label">Correo electrónico</p>
+                        <p className="input-label">Correo electrónico <span className='text-primary font-bold'>*</span></p>
                         <input value={formObject["Email"]} placeholder="Ingrese el correo electrónico" onChange={(e)=>{ setFormObject({...formObject, email: e.target.value}) }} type="Email" className="form-control" />
+                        {listOfErrors.includes("Email") && <p className='text-red-500 font-semibold text-[12px] mt-2'>Campo requerido</p>}
                     </div>
                     <div className={`w-1/4 mb-3 px-3`}>
                         <p className="input-label">Número telefónico</p>
                         <input value={formObject["Telefono"]} placeholder="Ingrese el número telefónico" onChange={(e)=>{ setFormObject({...formObject, Telefono: e.target.value}) }} type="phone" className="form-control" />
-                        {listOfErrors.includes("Telefono") && <p className='text-red-500 font-semibold text-[12px] mt-2'>Campo requerido</p>}
                     </div>
                     <div className={`w-1/4 mb-3 px-3`}>
                         <p className="input-label">Celular <span className='text-primary font-bold'>*</span></p>
@@ -348,7 +352,6 @@ function Form() {
                     <div className={`w-1/4 mb-3 px-3`}>
                         <p className="input-label">Celular 2</p>
                         <input value={formObject["CelularII"]} placeholder="Ingrese el número telefónico" onChange={(e)=>{ setFormObject({...formObject, CelularII: e.target.value}) }} type="phone" className="form-control" />
-                        {listOfErrors.includes("CelularII") && <p className='text-red-500 font-semibold text-[12px] mt-2'>Campo requerido</p>}
                     </div>
                     {formObject["IdTipoPersona"] !== 1 && <div className={`w-1/4 mb-3 px-3`}>
                         <p className="input-label">Nacionalidad <span className='text-primary font-bold'>*</span></p>
@@ -356,20 +359,23 @@ function Form() {
                             <option value="">Seleccione la nacionalidad</option>
                             {listOfNationalitys.map((type, i)=> <option key={i} value={type["IdNacionalidad"]}>{type["Nacionalidad"]}</option> )}
                         </select>
+                        {listOfErrors.includes("IdNacionalidad") && <p className='text-red-500 font-semibold text-[12px] mt-2'>Campo requerido</p>}
                     </div>}
                     {formObject["IdTipoPersona"] !== 1 && <div className={`w-1/4 mb-3 px-3`}>
-                        <p className="input-label">Estado civil</p>
+                        <p className="input-label">Estado civil <span className='text-primary font-bold'>*</span></p>
                         <select value={formObject["IdEstadoCivil"]}  onChange={(e)=>{ setFormObject({...formObject, IdEstadoCivil: e.target.value})  }} className="form-control">
                             <option value="">Seleccione el estado civil</option>
                             {listOfCivilStatus.map((type, i)=> <option key={i} value={type["IdEstadoCivil"]}>{type["EstadoCivil"]}</option> )}
                         </select>
+                        {listOfErrors.includes("IdEstadoCivil") && <p className='text-red-500 font-semibold text-[12px] mt-2'>Campo requerido</p>}
                     </div>}
                     {formObject["IdTipoPersona"] !== 1 && <div className={`w-1/4 mb-3 px-3`}>
-                        <p className="input-label">Profesión</p>
+                        <p className="input-label">Profesión <span className='text-primary font-bold'>*</span></p>
                         <select value={formObject["IdProfesion"]} onChange={(e)=>{ setFormObject({...formObject, IdProfesion: e.target.value})  }} className="form-control">
                             <option value="">Seleccione la profesión</option>
                             {listOfProfesion.map((type, i)=> <option key={i} value={type["IdProfesion"]}>{type["Profesion"]}</option> )}
                         </select>
+                        {listOfErrors.includes("IdProfesion") && <p className='text-red-500 font-semibold text-[12px] mt-2'>Campo requerido</p>}
                     </div>}
                     {formObject["IdTipoPersona"] !== 1 && <div className={`w-1/4 mb-3 px-3`}>
                         <p className="input-label">Ocupación</p>
@@ -393,13 +399,13 @@ function Form() {
                             <option value="">Seleccione la provincia</option>
                             {listOfProvincias.map((type, i)=> <option key={i} value={type["IdProvincia"]}>{type["Provincia"]}</option> )}
                         </select>
-                        {listOfErrors.includes("") && <p className='text-red-500 font-semibold text-[12px] mt-2'>Campo requerido</p>}
+                        {listOfErrors.includes("IdProvincia") && <p className='text-red-500 font-semibold text-[12px] mt-2'>Campo requerido</p>}
                     </div>
                     <div className={`w-1/4 mb-3 px-3`}>
                         <p className="input-label">Distrito <span className='text-primary font-bold'>*</span></p>
                         <select value={formObject["IdDistrito"]} onChange={(e)=>{ formatListsOfManzanero(e.target.value, "c") }} className="form-control">
                             <option value="">Seleccione el distrito</option>
-                            {listOfDistritos.map((type, i)=> <option key={i} value={type["IdDistrito"]}>{type["Distrito"]}</option> )}
+                            {formObject["IdProvincia"] && listOfDistritos.map((type, i)=> <option key={i} value={type["IdDistrito"]}>{type["Distrito"]}</option> )}
                         </select>
                         {listOfErrors.includes("IdDistrito") && <p className='text-red-500 font-semibold text-[12px] mt-2'>Campo requerido</p>}
                     </div>
@@ -407,7 +413,7 @@ function Form() {
                         <p className="input-label">Corregimiento <span className='text-primary font-bold'>*</span></p>
                         <select value={formObject["IdCorregimiento"]} onChange={(e)=>{ setFormObject({...formObject, IdCorregimiento: e.target.value}) }} className="form-control">
                             <option value="">Seleccione el corregimiento</option>
-                            {listOfCorregimientos.map((type, i)=> <option key={i} value={type["IdCorregimiento"]}>{type["Corregimiento"]}</option> )}
+                            {formObject["IdDistrito"] && listOfCorregimientos.map((type, i)=> <option key={i} value={type["IdCorregimiento"]}>{type["Corregimiento"]}</option> )}
                         </select>
                         {listOfErrors.includes("IdCorregimiento") && <p className='text-red-500 font-semibold text-[12px] mt-2'>Campo requerido</p>}
                     </div>
@@ -424,6 +430,7 @@ function Form() {
                     <div className={`w-1/4 mb-3 px-3`}>
                         <p className="input-label">Direccion <span className='text-primary font-bold'>*</span></p>
                         <input value={formObject["Direccion"]} placeholder={"Escriba la direccion"} onChange={(e)=>{ setFormObject({...formObject, Direccion: e.target.value}) }} type="text" className="form-control" />
+                        {listOfErrors.includes("Direccion") && <p className='text-red-500 font-semibold text-[12px] mt-2'>Campo requerido</p>}
                     </div>
                 </div>
             </div>
@@ -437,6 +444,9 @@ function Form() {
 
         let list = []
         let listOfRequiredValues = []
+
+        
+        //Correo electronico
         let listOfJuridic = [
             "Identificacion",
             "RazonSocial",
@@ -450,12 +460,20 @@ function Form() {
             "IdCorregimiento",
             "Direccion"
         ]
+        //Todos menos celularII, numero telefonico y ocupacion
         let listOfNatural = [
+            "IdTipoCedula",
             "Identificacion",
+            "IdSexo",
             "IdNacionalidad",
+            "IdEstadoCivil",
+            "IdProfesion",
             "Nombres",
+            "Apellido",
+            "Email",
             "Celular",
             "IdProvincia",
+            "FechaNacimiento",
             "IdDistrito",
             "IdCorregimiento",
             "Direccion"
@@ -463,26 +481,32 @@ function Form() {
 
         listOfRequiredValues = formObject["IdTipoPersona"] === 1 ? listOfJuridic : listOfNatural
 
-        let Corregimiento = listOfCorregimientos.find((prv)=>( parseInt(prv["IdCorregimiento"]) === parseInt(formObject["IdCorregimiento"]) ))["Corregimiento"]
-        let Distrito = listOfDistritos.find((prv)=>( parseInt(prv["IdDistrito"]) === parseInt(formObject["IdDistrito"]) ))["Distrito"]
-        let Provincia = listOfProvincias.find((prv)=>( parseInt(prv["IdProvincia"]) === parseInt(formObject["IdProvincia"]) ))["Provincia"]
-        
-        let object = {
-            ...formObject,
-            Corregimiento,
-            Distrito,
-            Provincia,
-            FechaNacimiento: moment(formObject["FechaNacimiento"]).format("YYYY-MM-DD").toString()
-        }
-
-
-        for (const key in object) {
-            let value = object[key]
-            if((value === "" || value === null) && listOfRequiredValues.includes(key)){
+        //Muestre los mensajes de requerido
+        for (const key in formObject) {
+            let value = formObject[key]
+            if((value === "" || value === null || value === undefined) && listOfRequiredValues.includes(key)){
                 list.push(key)
             }
         }
         
+        let object = {}
+
+        if(list.length === 0){
+            let Corregimiento = listOfCorregimientos.find((prv)=>( parseInt(prv["IdCorregimiento"]) === parseInt(formObject["IdCorregimiento"]) ))["Corregimiento"]
+            let Distrito = listOfDistritos.find((prv)=>( parseInt(prv["IdDistrito"]) === parseInt(formObject["IdDistrito"]) ))["Distrito"]
+            let Provincia = listOfProvincias.find((prv)=>( parseInt(prv["IdProvincia"]) === parseInt(formObject["IdProvincia"]) ))["Provincia"]
+            
+            object = {
+                ...formObject,
+                Corregimiento,
+                Distrito,
+                Provincia,
+                FechaNacimiento: moment(formObject["FechaNacimiento"]).format("YYYY-MM-DD").toString()
+            }
+        }
+
+        
+        console.log(formObject)
         console.log(list)
         setListOfErrors(list)
 
