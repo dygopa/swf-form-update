@@ -453,7 +453,6 @@ function Form() {
             "ReprecentanteLegal",
             "IdentificacionReprecentanteLegal",
             "ActividadEconomica",
-            "IdNacionalidad",
             "Celular",
             "IdProvincia",
             "IdDistrito",
