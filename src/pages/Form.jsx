@@ -23,6 +23,9 @@ function Form() {
     const [hasQuery, setHasQuery] = useState(false)
     const [isNatural, setIsNatural] = useState(false)
 
+    const [loadedDistrict, setLoadedDistrict] = useState(false)
+    const [loadedCorreccion, setLoadedCorreccion] = useState(false)
+
     const minYear = moment().subtract(10, "y").format("YYYY-MM-DD").toString()
     const maxDateBirth = moment().format("YYYY-MM-DD").toString()
     const [warningMessage, setWarningMessage] = useState("")
@@ -81,14 +84,20 @@ function Form() {
             case "d":
                 let _listOfDistritos = [...listOfDistritosMain].filter((prv)=>( parseInt(prv["IdProvincia"]) === parseInt(id) ))
                 setFormObject({...formObject, IdProvincia: id})
-
+                
                 setListOfDistritos(_listOfDistritos)
+                console.log(_listOfDistritos)
+                console.log(loadedDistrict)
+                setLoadedDistrict(true)
                 break;
             case "c":
                 let _listOfCorregimientos = [...listOfCorregimientosMain].filter((prv)=>( parseInt(prv["IdDistrito"]) === parseInt(id) ))
                 setFormObject({...formObject, IdDistrito: id})
                 
                 setListOfCorregimientos(_listOfCorregimientos)
+                console.log(_listOfCorregimientos)
+                console.log(loadedCorreccion)
+                setLoadedCorreccion(true)
                 break;
             default:
                 break;
@@ -99,9 +108,12 @@ function Form() {
         let query = window.location.search
         if(query){
             apiProvider.getActualizaciondatosaseguradoEndPoint(query).then((res)=>{
-                let dateBirth = moment(res.data[0]["FechaNacimiento"], "DD-MM-YYYY").format("YYYY-MM-DD").toString()
+                
                 formatListsOfManzanero(res.data[0]["IdProvincia"], "d")
                 formatListsOfManzanero(res.data[0]["IdDistrito"], "c")
+
+                let dateBirth = moment(res.data[0]["FechaNacimiento"], "DD-MM-YYYY").format("YYYY-MM-DD").toString()
+                
                 setFormObject({
                     ...res.data[0],
                     FechaNacimiento: dateBirth
@@ -125,13 +137,13 @@ function Form() {
             console.log(e)
         })
         await apiProvider.getDatosFormularioEndPoint("?Tipo=8").then((res)=>{
-            setListOfDistritos(res.data)
+            //setListOfDistritos(res.data)
             setListOfDistritosMain(res.data)
         }).catch((e)=>{
             console.log(e)
         })
         await apiProvider.getDatosFormularioEndPoint("?Tipo=9").then((res)=>{
-            setListOfCorregimientos(res.data)
+            //setListOfCorregimientos(res.data)
             setListOfCorregimientosMain(res.data)
         }).catch((e)=>{
             console.log(e)
@@ -173,6 +185,8 @@ function Form() {
         }).catch((e)=>{
             console.log(e)
         })
+
+        loadEntity()
 
         setLoadedAPI(true)
     }
@@ -244,16 +258,14 @@ function Form() {
         chargeAPI()
     }, [loadedAPI])
 
-    useEffect(() => {
-        loadEntity()
-    }, [loadedEntity])
-
     return (
         <div className="w-full flex flex-col justify-start items-center relative h-fit bg-gray-100 p-8">
             {warningStatus && <AlertComponent state={setWarningStatus} type={"3"} msg={warningMessage} />}
             {successStatus && <AlertComponent state={setSuccessStatus} type={"1"} msg={successMessage} />}
             {errorStatus && <AlertComponent state={setErrorStatus} type={"2"} msg={errorMessage} />}
-
+            {!loadedAPI && 
+                <div className='z-20 w-fit h-fit block fixed mx-auto top-5 bg-white border border-slate-200 p-[1.5%_4%] rounded font-semibold text-primary'>Cargando informacion...</div>
+            }
             <div className="my-4 w-[75%] relative bg-white p-[2%] rounded-md border">
                 <div className="flex justify-between items-center mb-[5%]">
                     <p className={`title-section text-orange-900`}>Datos personales</p>
@@ -405,7 +417,7 @@ function Form() {
                         <p className="input-label">Distrito <span className='text-primary font-bold'>*</span></p>
                         <select value={formObject["IdDistrito"]} onChange={(e)=>{ formatListsOfManzanero(e.target.value, "c") }} className="form-control">
                             <option value="">Seleccione el distrito</option>
-                            {formObject["IdProvincia"] && listOfDistritos.map((type, i)=> <option key={i} value={type["IdDistrito"]}>{type["Distrito"]}</option> )}
+                            {loadedDistrict && formObject["IdProvincia"] && listOfDistritos.map((type, i)=> <option key={i} value={type["IdDistrito"]}>{type["Distrito"]}</option> )}
                         </select>
                         {listOfErrors.includes("IdDistrito") && <p className='text-red-500 font-semibold text-[12px] mt-2'>Campo requerido</p>}
                     </div>
@@ -413,7 +425,7 @@ function Form() {
                         <p className="input-label">Corregimiento <span className='text-primary font-bold'>*</span></p>
                         <select value={formObject["IdCorregimiento"]} onChange={(e)=>{ setFormObject({...formObject, IdCorregimiento: e.target.value}) }} className="form-control">
                             <option value="">Seleccione el corregimiento</option>
-                            {formObject["IdDistrito"] && listOfCorregimientos.map((type, i)=> <option key={i} value={type["IdCorregimiento"]}>{type["Corregimiento"]}</option> )}
+                            {loadedCorreccion && formObject["IdDistrito"] && listOfCorregimientos.map((type, i)=> <option key={i} value={type["IdCorregimiento"]}>{type["Corregimiento"]}</option> )}
                         </select>
                         {listOfErrors.includes("IdCorregimiento") && <p className='text-red-500 font-semibold text-[12px] mt-2'>Campo requerido</p>}
                     </div>
@@ -445,8 +457,6 @@ function Form() {
         let list = []
         let listOfRequiredValues = []
 
-        
-        //Correo electronico
         let listOfJuridic = [
             "Identificacion",
             "RazonSocial",
@@ -454,12 +464,13 @@ function Form() {
             "IdentificacionReprecentanteLegal",
             "ActividadEconomica",
             "Celular",
+            "Email",
             "IdProvincia",
             "IdDistrito",
             "IdCorregimiento",
             "Direccion"
         ]
-        //Todos menos celularII, numero telefonico y ocupacion
+
         let listOfNatural = [
             "IdTipoCedula",
             "Identificacion",
