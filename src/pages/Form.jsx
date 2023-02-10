@@ -23,6 +23,7 @@ function Form() {
     const [loadedYears, setLoadedYears] = useState(false)
     const [hasQuery, setHasQuery] = useState(false)
     const [isNatural, setIsNatural] = useState(false)
+    const [validEmail, setValidEmail] = useState(false)
 
     const [loadedDistrict, setLoadedDistrict] = useState(false)
     const [loadedCorreccion, setLoadedCorreccion] = useState(false)
@@ -364,7 +365,8 @@ function Form() {
                     </div>}
                     <div className={`lg:w-1/4 mb-3 px-3 sm:w-full md:w-1/2 xs:w-full`}>
                         <p className="input-label">Correo electrónico <span className='text-primary font-bold'>*</span></p>
-                        <input defaultValue={formObject["Email"]} placeholder="Ingrese el correo electrónico" onChange={(e)=>{ setFormObject({...formObject, email: e.target.value}) }} type="Email" className="form-control" />
+                        <input defaultValue={formObject["Email"]} placeholder="Ingrese el correo electrónico" onChange={(e)=>{ setFormObject({...formObject, Email: e.target.value}) }} type="email" className="form-control" />
+                        {validEmail && <p className='text-red-500 font-semibold text-[12px] mt-2'>Email invalido</p>}
                         {listOfErrors.includes("Email") && <p className='text-red-500 font-semibold text-[12px] mt-2'>Campo requerido</p>}
                     </div>
                     <div className={`lg:w-1/4 mb-3 px-3 sm:w-full md:w-1/2 xs:w-full`}>
@@ -467,6 +469,15 @@ function Form() {
         </div>
     )
 
+    function handleVerifyEmail(prop){
+        if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(prop)){
+            setValidEmail(false)
+            return "2"
+        }
+        setValidEmail(true)
+        return "1"
+    }
+
     function handleValidationFunction(){
 
         let list = []
@@ -530,6 +541,7 @@ function Form() {
             }
         }
 
+        handleVerifyEmail(formObject["Email"]) === "1" && list.push("Email")
         
         console.log(formObject)
         console.log(list)
