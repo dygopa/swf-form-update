@@ -8,8 +8,8 @@ function Success() {
             <div className="text-green-600 text-[5rem]">
                 <FiCheckCircle/>
             </div>
-            <p className='text-green-600 font-semibold text-4xl'>Exitos</p>
-            <p className='text-slate-900 font-normal text-lg'>La informacion se actualizo exitosamente</p>
+            <p className='text-green-600 font-semibold text-4xl'>Éxito</p>
+            <p className='text-slate-900 font-normal text-lg'>La información se actualizo exitosamente</p>
         </div>
     </div>
   )
