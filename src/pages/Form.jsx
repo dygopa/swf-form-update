@@ -233,6 +233,14 @@ function Form() {
         onClickTypePersona(typePersona);
     }
 
+    async function downloadDocument(){
+        await apiProvider.getDocumentosFormularioEndPoint().then((res)=>{
+            console.log(res)
+        }).catch((e)=>{
+            console.log(e)
+        })
+    }
+
     function chargeYears(){
         let list = []
         
@@ -414,11 +422,23 @@ function Form() {
                         <p className="input-label">Documento de identidad</p>
                         <input placeholder="Seleccionar" onChange={selectFiles} type="file" className="form-control" />
                     </div>
+                    <div className={`lg:w-1/4 mb-3 px-3 sm:w-full md:w-1/2 xs:w-full`}>
+                        <p className="input-label">Licencia de conducir</p>
+                        <input placeholder="Seleccionar" onChange={selectFiles} type="file" className="form-control" />
+                    </div>
+                    <div className={`lg:w-1/4 mb-3 px-3 sm:w-full md:w-1/2 xs:w-full`}>
+                        <p className="input-label">Subir formulario</p>
+                        <input placeholder="Seleccionar" onChange={selectFiles} type="file" className="form-control" />
+                    </div>
+                    <div className={`lg:w-1/4 mb-3 px-3 sm:w-full md:w-1/2 xs:w-full`}>
+                        <p className="input-label">Formulario conoce a tu cliente</p>
+                        <a download href={formObject["IdTipoPersona"] !== 1 ? "/docs/ctc-natural.pdf" : '/docs/ctc-juridica.pdf'} className='btn btn-primary'>Descargar</a>
+                    </div>
 
                 </div>
             </div>
 
-            <div className="my-4 w-[75%] bg-white p-[2%] rounded-md border">
+            <div className="my-4 lg:w-[75%] md:w-[75%] sm:w-[75%] xs:w-[100%] relative bg-white p-[2%] rounded-md border">
                 <p className='title-section text-orange-900'>Direccion</p>
                 <div className="flex flex-wrap content-start relative h-fit">
 
@@ -463,7 +483,7 @@ function Form() {
                     </div>
                 </div>
             </div>
-            <div className="flex justify-end w-[75%] p-[2%]">
+            <div className="flex justify-end  lg:w-[75%] md:w-[75%] w-full p-[2%]">
                 <div onClick={()=>{ manageUpdateEntity() }} className="btn btn-primary btn-block">Actualizar</div>
             </div>
         </div>

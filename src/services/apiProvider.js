@@ -7,6 +7,7 @@ let loginEndPoint = "api/Configuration/login"
 let getActualizaciondatosaseguradoEndPoint = "api/Polizas/get_actualizaciondatosasegurado"
 let updateActualizardatosaseguradoEndPoint = "api/Polizas/update_actualizardatosasegurado"
 let getDatosFormularioEndPoint = "api/Polizas/get_datos_formulario"
+let getDocumentosFormularioEndPoint = "api/Polizas/get_documentos_formulario"
 
 
 let token = localStorage.getItem('token');
@@ -19,6 +20,12 @@ class ApiProvider{
 
     async getDatosFormularioEndPoint(queryString){
         let url = urlAPI + getDatosFormularioEndPoint + queryString
+
+        return await axios.get(url, config)
+    }
+
+    async getDocumentosFormularioEndPoint(queryString){
+        let url = urlAPI + getDocumentosFormularioEndPoint + queryString
 
         return await axios.get(url, config)
     }
