@@ -377,6 +377,11 @@ function Form() {
                         {validEmail && <p className='text-red-500 font-semibold text-[12px] mt-2'>Email invalido</p>}
                         {listOfErrors.includes("Email") && <p className='text-red-500 font-semibold text-[12px] mt-2'>Campo requerido</p>}
                     </div>
+                    {formObject["IdTipoPersona"] === 1 && <div className={`lg:w-1/4 mb-3 px-3 sm:w-full md:w-1/2 xs:w-full`}>
+                        <p className="input-label">Correo electrónico adicional<span className='text-primary font-bold'>*</span></p>
+                        <input defaultValue={formObject["EmailAdicional"]} placeholder="Ingrese el correo electrónico adicional" onChange={(e)=>{ setFormObject({...formObject, EmailAdicional: e.target.value}) }} type="email" className="form-control" />
+                        {validEmail && <p className='text-red-500 font-semibold text-[12px] mt-2'>Email adicional invalido</p>}
+                    </div>}
                     <div className={`lg:w-1/4 mb-3 px-3 sm:w-full md:w-1/2 xs:w-full`}>
                         <p className="input-label">Número telefónico</p>
                         <input value={formObject["Telefono"]} placeholder="Ingrese el número telefónico" onChange={(e)=>{ setFormObject({...formObject, Telefono: e.target.value}) }} type="phone" className="form-control" />
