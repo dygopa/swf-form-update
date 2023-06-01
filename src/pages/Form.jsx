@@ -437,7 +437,7 @@ function Form() {
                     </div>
                     <div className={`lg:w-1/4 mb-3 px-3 sm:w-full md:w-1/2 xs:w-full`}>
                         <p className="input-label">Formulario conoce a tu cliente</p>
-                        <a download href={formObject["IdTipoPersona"] !== 1 ? "/docs/ctc-natural.pdf" : '/docs/ctc-juridica.pdf'} className='btn btn-primary'>Descargar</a>
+                        <div onClick={()=>{ handleDownloadFile() }} className='btn btn-primary'>Descargar</div>
                     </div>
 
                 </div>
@@ -493,6 +493,29 @@ function Form() {
             </div>
         </div>
     )
+
+    function handleDownloadFile(){
+        apiProvider.getDocumentosFormularioEndPoint("?Tipo=1").then((res)=>{
+            if(res.status === 200){
+                setSuccessStatus(true)
+                setErrorStatus(false)
+                
+                let pdfText = res.data[0]["Documento"].replace(" ", "")
+
+                const linkSource = `data:application/pdf;base64,${pdfText}`;
+                const downloadLink = document.createElement("a");
+                const fileName = "file.pdf";
+            
+                downloadLink.href = linkSource;
+                downloadLink.download = fileName;
+                downloadLink.click();
+
+                setSuccessMessage("Descargado exitosamente")
+            }
+        }).catch((e)=>{
+            console.log(e)
+        })
+    }
 
     function handleVerifyEmail(prop){
         if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(prop)){
