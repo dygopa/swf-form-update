@@ -31,9 +31,14 @@ function Home() {
         loadEntity()
     }, [loadedEntity])
 
+    if(hasQuery){
+        return(
+            <Form/>
+
+        )
+    }
+
     return (
-        hasQuery ?
-        <Form/> :
         <EmptyState/>
     )
 }

@@ -495,7 +495,7 @@ function Form() {
     )
 
     function handleDownloadFile(){
-        apiProvider.getDocumentosFormularioEndPoint("?Tipo=1").then((res)=>{
+        apiProvider.getDocumentosFormularioEndPoint(`?Tipo=1&IdTipoPersona=${formObject.IdTipoPersona}`).then((res)=>{
             if(res.status === 200){
                 setSuccessStatus(true)
                 setErrorStatus(false)
