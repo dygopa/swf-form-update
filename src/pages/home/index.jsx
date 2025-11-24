@@ -1,12 +1,20 @@
-import React, {useEffect, useState} from 'react'
-import { FiAlertCircle } from 'react-icons/fi'
-import Form from './Form'
+import { useMemo } from "react";
+import HomeMain from "../../components/home";
+import {FiAlertCircle} from 'react-icons/fi'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-function Home() {
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+    }
+  }
+});
 
-    const [hasQuery, setHasQuery] = useState(false)
-    const [loadedEntity, setLoadedEntity] = useState(false)
-
+export default function HomeIndex(){
+    
     const EmptyState = () => {
         return(
             <div className='bg-white w-full h-screen'>
@@ -21,26 +29,17 @@ function Home() {
         )
     }
 
-    function loadEntity(){
-        let query = window.location.search
-        setHasQuery(query ? true : false)
-        setLoadedEntity(true)
-    }
-
-    useEffect(() => {
-        loadEntity()
-    }, [loadedEntity])
+    const hasQuery = useMemo(()=> window.location.search !== "",[window.location])
 
     if(hasQuery){
         return(
-            <Form/>
-
+            <QueryClientProvider client={queryClient}>
+                <HomeMain/>
+            </QueryClientProvider>
         )
     }
-
+    
     return (
         <EmptyState/>
     )
 }
-
-export default Home

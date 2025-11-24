@@ -1,6 +1,7 @@
 import axios from "axios"
 
-let webDevURL = "https://formolarioswfii.azurewebsites.net/"
+let webDevURL = "https://www.somossegurosapp.com:693/SF.YoSeguroApi/"
+//let webDevURL = "https://formolarioswfii.azurewebsites.net/"
 let urlAPI = webDevURL
 
 let loginEndPoint = "api/Configuration/login"

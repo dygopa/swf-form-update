@@ -1,7 +1,7 @@
 import React from 'react'
 import { FiCheckCircle } from 'react-icons/fi'
 
-function Success() {
+function SuccessIndex() {
   return (
     <div className='bg-white w-full h-screen'>
         <div className="w-full h-full gap-5 flex flex-col justify-center items-center text-center">
@@ -15,4 +15,4 @@ function Success() {
   )
 }
 
-export default Success
+export default SuccessIndex

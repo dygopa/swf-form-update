@@ -1,16 +1,14 @@
-import React from 'react'
-import { useEffect, useState } from 'react'
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 
-import Home from './pages/Home';
-import Success from './pages/Success';
+import HomeIndex from './pages/home';
+import SuccessIndex from './pages/success';
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Home/>}/>
-        <Route path="/success" element={<Success/>}/>
+        <Route path="/" element={<HomeIndex/>}/>
+        <Route path="/success" element={<SuccessIndex/>}/>
       </Routes>
     </Router>
   )
