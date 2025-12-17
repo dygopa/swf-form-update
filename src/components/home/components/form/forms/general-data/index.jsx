@@ -125,7 +125,7 @@ export default function GeneralData({images, setImages}){
     }, [dispatch]);
 
     const isNatural = useMemo(()=> {
-        return generalData["IdTipoPersona"] !== "1"
+        return generalData["IdTipoPersona"].toString() !== "1"
     },[generalData["IdTipoPersona"]])
 
     const districtsAfterFilter = useMemo(()=>{
@@ -155,8 +155,8 @@ export default function GeneralData({images, setImages}){
             <Alert type="error" title="Ha ocurrido un error" body="No se han podido cargar isPEP" show={!!isPEPError}/>
             <div className="w-full h-fit flex flex-col justify-start items-center relative bg-white rounded-xl border border-slate-200 p-4">
                 <div className="w-full flex flex-col justify-start items-center relative gap-3">
-                    <h3 className="w-full text-2xl font-medium text-primary py-4 text-left">Datos Generales {generalData?.IdTipoPersona}</h3>
-                    <div className="w-full grid grid-cols-4 relative gap-4">
+                    <h3 className="w-full text-2xl font-medium text-primary py-4 text-left">Datos Generales</h3>
+                    <div className="w-full grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 relative gap-4">
                         <Inputs.Group
                             label="Tipo de Persona"
                         >
@@ -164,7 +164,7 @@ export default function GeneralData({images, setImages}){
                                 value={generalData?.IdTipoPersona ?? ""}
                                 onChange={setGeneralDataField("IdTipoPersona")}
                             >
-                                <option>Seleccionar</option>
+                                <option>Seleccionar {generalData?.IdTipoPersona}</option>
                                 {(typePersons ?? []).map((elem, i) => <option value={elem["IdTipoPersona"]} key={i}>{elem["TipoPersona"]}</option> )}
                             </Inputs.select>
                         </Inputs.Group>
@@ -352,18 +352,18 @@ export default function GeneralData({images, setImages}){
                         <Inputs.Group
                             label="Teléfono Residencial"
                         >
-                            <Inputs.input 
+                            <Inputs.Phone 
                                 value={generalData?.Telefono ?? ""}
-                                onChange={setGeneralDataField("Telefono")}
+                                onComplete={setGeneralDataField("Telefono")}
                             />
                         </Inputs.Group>
                         <Inputs.Group
                             required
                             label="Celular"
                         >
-                            <Inputs.input 
+                            <Inputs.Phone 
                                 value={generalData?.Celular ?? ""}
-                                onChange={setGeneralDataField("Celular")}
+                                onComplete={setGeneralDataField("Celular")}
                             />
                         </Inputs.Group>
                         <Inputs.Group
@@ -500,7 +500,7 @@ export default function GeneralData({images, setImages}){
                 </div>
                 <div className="w-full flex flex-col justify-start items-center relative gap-3">
                     <h3 className="w-full text-2xl font-medium text-primary py-4 text-left">Datos Ocupacionales</h3>
-                    <div className="w-full grid grid-cols-4 relative gap-4">
+                    <div className="w-full grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 relative gap-4">
                         <Inputs.Group
                             required
                             label="Profesión"
@@ -540,9 +540,9 @@ export default function GeneralData({images, setImages}){
                         <Inputs.Group
                             label="Teléfono"
                         >
-                            <Inputs.input 
+                            <Inputs.Phone 
                                 value={occupationalData?.TelefonoEmpresaNegocio ?? ""}
-                                onChange={setOccupationalField('TelefonoEmpresaNegocio')}
+                                onComplete={setOccupationalField('TelefonoEmpresaNegocio')}
                             />
                         </Inputs.Group>
                         <Inputs.Group
@@ -588,8 +588,8 @@ export default function GeneralData({images, setImages}){
                         disabled={
                             !generalData ||
                             !addressData ||
-                            (generalData?.IdTipoPersona === 2 ? completedNaturalForm == false : completedJuridicForm == false) ||
-                            (generalData?.IdTipoPersona === 2 ? completedOccupationalForm == false : false) ||
+                            (generalData?.IdTipoPersona.toString() === "2" ? completedNaturalForm == false : completedJuridicForm == false) ||
+                            (generalData?.IdTipoPersona.toString() === "2" ? completedOccupationalForm == false : false) ||
                             !correctEmail
                         }
                         onClick={()=>{
