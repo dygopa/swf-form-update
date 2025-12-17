@@ -156,7 +156,9 @@ export default function Decider(){
                 images={images}
                 setImages={setImages}
             />}
-            {activeStep === 2 && <FinancialProfile/>}
+            {activeStep === 2 && <FinancialProfile
+                images={images}
+            />}
             {activeStep === 3 && <References
                 images={images}
             />}

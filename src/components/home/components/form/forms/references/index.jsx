@@ -103,7 +103,7 @@ export default function References({images}) {
 
     useEffect(()=>{
         if(statusUpload === "SUCCESS"){
-            window.location.href = "/success"
+            //window.location.href = "/success"
         }
     },[statusUpload])
 

@@ -36,6 +36,7 @@ export const occupationalDataInitialState = {
 }
 
 export const financialProfileDataInitialState = {
+    Supera10MILK: "",
     IdPerfilFinanciero: "",
     ActividadEmpresaNegocio: "",
 }
