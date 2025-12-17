@@ -390,7 +390,7 @@ export default function GeneralData({images, setImages}){
                 </div>
                 <div className="w-full flex flex-col justify-start items-center relative gap-3">
                     <h3 className="w-full text-2xl font-medium text-primary py-4 text-left">Documentos</h3>
-                    <div className="w-full grid grid-cols-4 relative gap-4">
+                    <div className="w-full grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 relative gap-4">
                         <Inputs.Group
                             label="Documento de identidad"
                         >
@@ -432,7 +432,7 @@ export default function GeneralData({images, setImages}){
                 </div>
                 <div className="w-full flex flex-col justify-start items-center relative gap-3">
                     <h3 className="w-full text-2xl font-medium text-primary py-4 text-left">Direccion</h3>
-                    <div className="w-full grid grid-cols-4 relative gap-4">
+                    <div className="w-full grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 relative gap-4">
                         <Inputs.Group
                             required
                             label="Provincia"

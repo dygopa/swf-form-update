@@ -126,7 +126,7 @@ export default function References({images}) {
                         <p className="text-slate-950 font-semibold text-slate-950 pb-2 border-b border-slate-200 w-full">Bancaria</p>
                         <div className="w-full grid grid-cols-3 gap-4">
                             <Inputs.Group
-                                label="Nombre"
+                                label="Nombre o Razón social"
                             >
                                 <Inputs.input 
                                     value={referencesData?.NombreReferenciaBancaria ?? ""}
@@ -134,7 +134,7 @@ export default function References({images}) {
                                 />
                             </Inputs.Group>
                             <Inputs.Group
-                                label="Relacion con el cliente"
+                                label="Relación con el Cliente"
                             >
                                 <Inputs.input 
                                     value={referencesData?.RelacionClienteReferenciaBancaria ?? ""}
@@ -142,11 +142,11 @@ export default function References({images}) {
                                 />
                             </Inputs.Group>
                             <Inputs.Group
-                                label="Telefono"
+                                label="Teléfono de Contacto"
                             >
-                                <Inputs.input 
+                                <Inputs.Phone 
                                     value={referencesData?.TelefonoReferenciaBancaria ?? ""}
-                                    onChange={setReferencesField('TelefonoReferenciaBancaria')}
+                                    onComplete={setReferencesField('TelefonoReferenciaBancaria')}
                                 />
                             </Inputs.Group>
                         </div>
@@ -155,7 +155,7 @@ export default function References({images}) {
                         <p className="text-slate-950 font-semibold text-slate-950 pb-2 border-b border-slate-200 w-full">Comercial</p>
                         <div className="w-full grid grid-cols-3 gap-4">
                             <Inputs.Group
-                                label="Nombre"
+                                label="Nombre o Razón social"
                             >
                                 <Inputs.input 
                                     value={referencesData?.NombreReferenciaComercial ?? ""}
@@ -163,7 +163,7 @@ export default function References({images}) {
                                 />
                             </Inputs.Group>
                             <Inputs.Group
-                                label="Relacion con el cliente"
+                                label="Relación con el Cliente"
                             >
                                 <Inputs.input 
                                     value={referencesData?.RelacionClienteReferenciaComercial ?? ""}
@@ -171,11 +171,11 @@ export default function References({images}) {
                                 />
                             </Inputs.Group>
                             <Inputs.Group
-                                label="Telefono"
+                                label="Teléfono de Contacto"
                             >
-                                <Inputs.input 
+                                <Inputs.Phone 
                                     value={referencesData?.TelefonoReferenciaComercial ?? ""}
-                                    onChange={setReferencesField('TelefonoReferenciaComercial')}
+                                    onComplete={setReferencesField('TelefonoReferenciaComercial')}
                                 />
                             </Inputs.Group>
                         </div>
@@ -184,7 +184,7 @@ export default function References({images}) {
                         <p className="text-slate-950 font-semibold text-slate-950 pb-2 border-b border-slate-200 w-full">Personal</p>
                         <div className="w-full grid grid-cols-3 gap-4">
                             <Inputs.Group
-                                label="Nombre"
+                                label="Nombre o Razón social"
                             >
                                 <Inputs.input 
                                     value={referencesData?.NombreReferenciaPersonal ?? ""}
@@ -192,7 +192,7 @@ export default function References({images}) {
                                 />
                             </Inputs.Group>
                             <Inputs.Group
-                                label="Relacion con el cliente"
+                                label="Relación con el Cliente"
                             >
                                 <Inputs.input 
                                     value={referencesData?.RelacionClienteReferenciaPersonal ?? ""}
@@ -200,11 +200,11 @@ export default function References({images}) {
                                 />
                             </Inputs.Group>
                             <Inputs.Group
-                                label="Telefono"
+                                label="Teléfono de Contacto"
                             >
-                                <Inputs.input 
+                                <Inputs.Phone 
                                     value={referencesData?.TelefonoReferenciaPersonal ?? ""}
-                                    onChange={setReferencesField('TelefonoReferenciaPersonal')}
+                                    onComplete={setReferencesField('TelefonoReferenciaPersonal')}
                                 />
                             </Inputs.Group>
                         </div>
