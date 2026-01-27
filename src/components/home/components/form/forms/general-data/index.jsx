@@ -5,11 +5,10 @@ import { FormContext } from "../../context/context";
 import useGeneralDataLists from "./context/useGeneralDataLists";
 import Alert from "../../../../../ui/alert";
 import { Button } from "../../../../../ui/button";
-import { fetchDocumentToDownload, updateInsuredData } from "../../context/useInsuredInformation";
+import { fetchDocumentToDownload } from "../../context/useInsuredInformation";
 import useCompletedFields from "../../../../../../utils/hooks/useCompletedFields";
-import { listOfAddressRequiredFields, listOfJuridicRequiredFields, listOfNaturalRequiredFields, listOfOccupationalRequiredFields } from "../../decider";
+import { listOfJuridicRequiredFields, listOfNaturalRequiredFields, listOfOccupationalRequiredFields } from "../../decider";
 import useCorrectEmail from "../../../../../../utils/hooks/useCorrectEmail";
-import { formDataMapToAPI } from "../../../../../../domain/mappers/form/formDataMapToAPI";
 
 export default function GeneralData({images, setImages}){
     const lists = useGeneralDataLists();
@@ -98,12 +97,16 @@ export default function GeneralData({images, setImages}){
     const correctEmail = useCorrectEmail(generalData?.Email);
 
     const setGeneralDataField = useCallback((field, cb) => (e) => {
-        const value = e.target.value;
-        dispatch({
-            type: 'SET_GENERAL_DATA',
-            payload: { data: { [field]: value } },
-        });
-        if (typeof cb === 'function') cb(value);
+        if(e && e.target){
+            const value = e.target.value;
+            console.log("value:", value)
+
+            dispatch({
+                type: 'SET_GENERAL_DATA',
+                payload: { data: { [field]: value } },
+            });
+            if (typeof cb === 'function') cb(value);
+        }
     }, [dispatch]);
 
     const setAddressField = useCallback((field, cb) => (e) => {
@@ -116,12 +119,15 @@ export default function GeneralData({images, setImages}){
     }, [dispatch]);
     
     const setOccupationalField = useCallback((field, cb) => (e) => {
-        const value = e.target.value;
-        dispatch({
-            type: 'SET_OCCUPATIONAL_DATA',
-            payload: { data: { [field]: value } },
-        });
-        if (typeof cb === 'function') cb(value);
+        if(e && e.target){
+            const value = e.target.value;
+            
+            dispatch({
+                type: 'SET_OCCUPATIONAL_DATA',
+                payload: { data: { [field]: value } },
+            });
+            if (typeof cb === 'function') cb(value);
+        }
     }, [dispatch]);
 
     const isNatural = useMemo(()=> {
@@ -196,7 +202,10 @@ export default function GeneralData({images, setImages}){
                                 <Inputs.Group
                                     label={`Segundo Nombre`}
                                 >
-                                    <Inputs.input/>
+                                    <Inputs.input
+                                        value={generalData?.NombresSegundo ?? ""}
+                                        onChange={setGeneralDataField('NombresSegundo')}
+                                    />
                                 </Inputs.Group>
                                 <Inputs.Group
                                     required
@@ -211,7 +220,8 @@ export default function GeneralData({images, setImages}){
                                     label="Apellido Materno"
                                 >
                                     <Inputs.input 
-                                        onChange={setGeneralDataField("")}
+                                        value={generalData?.ApellidoMaterno ?? ""}
+                                        onChange={setGeneralDataField("ApellidoMaterno")}
                                     />
                                 </Inputs.Group>
                                 <Inputs.Group
@@ -334,7 +344,10 @@ export default function GeneralData({images, setImages}){
                         <Inputs.Group
                             label="País de Residencia"
                         >
-                            <Inputs.select onChange={setGeneralDataField("")}>
+                            <Inputs.select 
+                                value={generalData?.IdPaisResidencia ?? ""}
+                                onChange={setGeneralDataField("IdPaisResidencia")}
+                            >
                                 <option>Seleccionar</option>
                                 {(residentialCountries ?? []).map((elem, i) => <option value={elem["IdPais"]} key={i}>{elem["Pais"]}</option> )}
                             </Inputs.select>
@@ -342,19 +355,24 @@ export default function GeneralData({images, setImages}){
                         <Inputs.Group
                             label="Apartado Postal"
                         >
-                            <Inputs.input onChange={setGeneralDataField("")}/>
-                        </Inputs.Group>
-                        <Inputs.Group
-                            label="Dirección Residencial"
-                        >
-                            <Inputs.input onChange={setGeneralDataField("")}/>
+                            <Inputs.input 
+                                value={generalData?.CodigoPostal ?? ""}
+                                onChange={setGeneralDataField("CodigoPostal")}
+                            />
                         </Inputs.Group>
                         <Inputs.Group
                             label="Teléfono Residencial"
                         >
                             <Inputs.Phone 
-                                value={generalData?.Telefono ?? ""}
-                                onComplete={setGeneralDataField("Telefono")}
+                                value={generalData?.TelefonoResidencial ?? ""}
+                                onComplete={
+                                    value => {
+                                        dispatch({
+                                            type: 'SET_GENERAL_DATA',
+                                            payload: { data: { TelefonoResidencial: value } },
+                                        });
+                                    }
+                                }
                             />
                         </Inputs.Group>
                         <Inputs.Group
@@ -363,7 +381,12 @@ export default function GeneralData({images, setImages}){
                         >
                             <Inputs.Phone 
                                 value={generalData?.Celular ?? ""}
-                                onComplete={setGeneralDataField("Celular")}
+                                onComplete={ value => {
+                                    dispatch({
+                                        type: 'SET_GENERAL_DATA',
+                                        payload: { data: { Celular: value } },
+                                    });
+                                }}
                             />
                         </Inputs.Group>
                         <Inputs.Group
@@ -542,7 +565,12 @@ export default function GeneralData({images, setImages}){
                         >
                             <Inputs.Phone 
                                 value={occupationalData?.TelefonoEmpresaNegocio ?? ""}
-                                onComplete={setOccupationalField('TelefonoEmpresaNegocio')}
+                                onComplete={value => {
+                                    dispatch({
+                                        type: 'SET_OCCUPATIONAL_DATA',
+                                        payload: { data: { TelefonoEmpresaNegocio: value } },
+                                    });
+                                }}
                             />
                         </Inputs.Group>
                         <Inputs.Group

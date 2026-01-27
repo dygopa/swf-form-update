@@ -27,7 +27,7 @@ export default function FinancialProfile({images}) {
 
         try {
             
-            if (financialData?.Supera10MILK.toString() === "1") {
+            if (financialData?.IdSupera10MILK.toString() === "1") {
                 dispatch({ type: "SET_ACTIVE_STEP", payload: { data: 3 } });
                 return;
             }
@@ -103,6 +103,7 @@ export default function FinancialProfile({images}) {
         if (typeof cb === 'function') cb(value);
     }, [dispatch]);
 
+
     return (
         <>
             <Alert type="error" title="Ha ocurrido un error" body="No se han podido cargar overpass10K" show={!!overpass10KError} />
@@ -113,14 +114,15 @@ export default function FinancialProfile({images}) {
                     <h3 className="w-full text-2xl font-medium text-primary py-2 text-left">Polizas con prima anual, igual o mayor a B/. 10,000.00</h3>
                     <Inputs.Group label="El total de las primas anuales que Usted paga, son iguales o superan los B/. 10,000.00">
                         <Inputs.select
-                            onChange={setFinancilDataField("Supera10MILK")}
+                            value={financialData?.IdSupera10MILK ?? ""}
+                            onChange={setFinancilDataField("IdSupera10MILK")}
                         >
                             <option>Seleccionar</option>
                             {(overpass10K ?? []).map((elem, i) => <option value={elem["IdSupera10MILK"]} key={i}>{elem["Supera10MILK"]}</option>)}
                         </Inputs.select>
                     </Inputs.Group>
                 </div>
-                {financialData?.Supera10MILK.toString() === "1" &&
+                {financialData?.IdSupera10MILK.toString() === "1" &&
                     <>
                         <div className="w-full flex flex-col justify-start items-start relative">
                             <h3 className="w-full text-2xl font-medium text-primary py-2 text-left">Declaracion de fuente y origen de recursos de la transaccion</h3>

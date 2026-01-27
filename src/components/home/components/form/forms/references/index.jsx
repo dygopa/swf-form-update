@@ -54,6 +54,8 @@ export default function References({images}) {
 
             const object = formDataMapToAPI(initialObject)
             
+            console.log("object:", object)
+            
             const form_data = new FormData()
             form_data.append("DataJson", JSON.stringify([object]))
             
@@ -88,7 +90,10 @@ export default function References({images}) {
             "RelacionClienteReferenciaPersonal",
             "TelefonoReferenciaBancaria",
             "TelefonoReferenciaComercial",
-            "TelefonoReferenciaPersonal"
+            "TelefonoReferenciaPersonal",
+            "ActividadReferenciaBancaria",
+            "ActividadReferenciaComercial",
+            "ActividadReferenciaPersonal"
         ],
     });
 
@@ -103,7 +108,7 @@ export default function References({images}) {
 
     useEffect(()=>{
         if(statusUpload === "SUCCESS"){
-            //window.location.href = "/success"
+            window.location.href = "/success"
         }
     },[statusUpload])
 
@@ -124,13 +129,21 @@ export default function References({images}) {
                     <h3 className="w-full text-2xl font-medium text-primary py-4 text-left">Referencias</h3>
                     <div className="w-full flex flex-col justify-center items-start relative gap-4">
                         <p className="text-slate-950 font-semibold text-slate-950 pb-2 border-b border-slate-200 w-full">Bancaria</p>
-                        <div className="w-full grid grid-cols-3 gap-4">
+                        <div className="w-full grid grid-cols-4 gap-4">
                             <Inputs.Group
                                 label="Nombre o Razón social"
                             >
                                 <Inputs.input 
                                     value={referencesData?.NombreReferenciaBancaria ?? ""}
                                     onChange={setReferencesField('NombreReferenciaBancaria')}
+                                />
+                            </Inputs.Group>
+                            <Inputs.Group
+                                label="Actividad"
+                            >
+                                <Inputs.input 
+                                    value={referencesData?.ActividadReferenciaBancaria ?? ""}
+                                    onChange={setReferencesField('ActividadReferenciaBancaria')}
                                 />
                             </Inputs.Group>
                             <Inputs.Group
@@ -146,20 +159,33 @@ export default function References({images}) {
                             >
                                 <Inputs.Phone 
                                     value={referencesData?.TelefonoReferenciaBancaria ?? ""}
-                                    onComplete={setReferencesField('TelefonoReferenciaBancaria')}
+                                    onComplete={value => {
+                                        dispatch({
+                                            type: 'SET_REFERENCES_DATA',
+                                            payload: { data: { TelefonoReferenciaBancaria: value } },
+                                        });
+                                    }}
                                 />
                             </Inputs.Group>
                         </div>
                     </div>
                     <div className="w-full flex flex-col justify-center items-start relative gap-4">
                         <p className="text-slate-950 font-semibold text-slate-950 pb-2 border-b border-slate-200 w-full">Comercial</p>
-                        <div className="w-full grid grid-cols-3 gap-4">
+                        <div className="w-full grid grid-cols-4 gap-4">
                             <Inputs.Group
                                 label="Nombre o Razón social"
                             >
                                 <Inputs.input 
                                     value={referencesData?.NombreReferenciaComercial ?? ""}
                                     onChange={setReferencesField('NombreReferenciaComercial')}
+                                />
+                            </Inputs.Group>
+                            <Inputs.Group
+                                label="Actividad"
+                            >
+                                <Inputs.input 
+                                    value={referencesData?.ActividadReferenciaComercial ?? ""}
+                                    onChange={setReferencesField('ActividadReferenciaComercial')}
                                 />
                             </Inputs.Group>
                             <Inputs.Group
@@ -175,20 +201,33 @@ export default function References({images}) {
                             >
                                 <Inputs.Phone 
                                     value={referencesData?.TelefonoReferenciaComercial ?? ""}
-                                    onComplete={setReferencesField('TelefonoReferenciaComercial')}
+                                    onComplete={value => {
+                                        dispatch({
+                                            type: 'SET_REFERENCES_DATA',
+                                            payload: { data: { TelefonoReferenciaComercial: value } },
+                                        });
+                                    }}
                                 />
                             </Inputs.Group>
                         </div>
                     </div>
                     <div className="w-full flex flex-col justify-center items-start relative gap-4">
                         <p className="text-slate-950 font-semibold text-slate-950 pb-2 border-b border-slate-200 w-full">Personal</p>
-                        <div className="w-full grid grid-cols-3 gap-4">
+                        <div className="w-full grid grid-cols-4 gap-4">
                             <Inputs.Group
                                 label="Nombre o Razón social"
                             >
                                 <Inputs.input 
                                     value={referencesData?.NombreReferenciaPersonal ?? ""}
                                     onChange={setReferencesField('NombreReferenciaPersonal')}
+                                />
+                            </Inputs.Group>
+                            <Inputs.Group
+                                label="Actividad"
+                            >
+                                <Inputs.input 
+                                    value={referencesData?.ActividadReferenciaPersonal ?? ""}
+                                    onChange={setReferencesField('ActividadReferenciaPersonal')}
                                 />
                             </Inputs.Group>
                             <Inputs.Group
@@ -204,7 +243,12 @@ export default function References({images}) {
                             >
                                 <Inputs.Phone 
                                     value={referencesData?.TelefonoReferenciaPersonal ?? ""}
-                                    onComplete={setReferencesField('TelefonoReferenciaPersonal')}
+                                    onComplete={value => {
+                                        dispatch({
+                                            type: 'SET_REFERENCES_DATA',
+                                            payload: { data: { TelefonoReferenciaPersonal: value } },
+                                        });
+                                    }}
                                 />
                             </Inputs.Group>
                         </div>

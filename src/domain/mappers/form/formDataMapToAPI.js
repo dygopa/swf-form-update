@@ -8,8 +8,10 @@ export function formDataMapToAPI(data){
         Identificacion: data["Identificacion"] ?? "",
         IdSexo: data["IdSexo"] ?? "",
         Sexo: data["Sexo"] ?? "",
-        Nombres: data["Nombres"] ?? "",
-        Apellido: data["Apellido"] ?? "",
+        NombresI: data["Nombres"] ?? "",
+        NombresII: data["NombresSegundo"] ?? "",
+        ApellidoI: data["Apellido"] ?? "",
+        ApellidoII: data["ApellidoMaterno"] ?? "",
         RazonSocial: data["RazonSocial"] ?? "",
         FechaNacimiento: data["FechaNacimiento"] ?? "",
         Email: data["Email"] ?? "",
@@ -21,6 +23,9 @@ export function formDataMapToAPI(data){
         IdEstadoCivil: data["IdEstadoCivil"] ?? "",
         EstadoCivil: data["EstadoCivil"] ?? "",
         ApellidoCasada: data["ApellidoCasada"] ?? "",
+
+        IdPaisResidencia: data["IdPaisResidencia"] ?? "",
+        CodigoPostal: data["CodigoPostal"] ?? "",
         
         IdPep: data["IdPep"] ?? "",
 
@@ -32,7 +37,7 @@ export function formDataMapToAPI(data){
         TelefonoEmpresaNegocio: data["TelefonoEmpresaNegocio"] ?? "",
         EmailEmpresa: data["EmailEmpresa"] ?? "",
 
-        IdActividadEconomica: data["IdActividadEconomica"] ?? "",
+        IdActividadEconomica: data["IdActividadEconomica"] ?? null,
         ActividadEconomica: data["ActividadEconomica"] ?? "",
         ReprecentanteLegal: data["ReprecentanteLegal"] ?? "",
         IdentificacionReprecentanteLegal: data["IdentificacionReprecentanteLegal"] ?? "",
@@ -56,6 +61,8 @@ export function formDataMapToAPI(data){
         IdPerfilFinanciero: data["IdPerfilFinanciero"] ?? "",
         ActividadEmpresaNegocio: data["ActividadEmpresaNegocio"] ?? "",
         
+        IdSupera10MILK: data["IdSupera10MILK"] ?? 2,
+
         IdReferenciaPersonal: data["IdReferenciaPersonal"] ?? "",
         NombreReferenciaPersonal: data["NombreReferenciaPersonal"] ?? "",
         ActividadReferenciaPersonal: data["ActividadReferenciaPersonal"] ?? "",

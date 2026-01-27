@@ -4,10 +4,25 @@ export const generalDataInitialState = {
     Identificacion: "",
     IdSexo: "",
     Nombres: "",
+    NombresSegundo: "",
     Apellido: "",
+    ApellidoMaterno: "",
     ApellidoCasada: "",
     RazonSocial: "",
     FechaNacimiento: "",
+    ReprecentanteLegal: "",
+    PaisResidencia: "",
+    EmailAdicional: "",
+    IdentificacionReprecentanteLegal: "",
+    IdActividadEconomica: "",
+
+    IdPaisResidencia: "",
+    CodigoPostal: "",
+
+    ApartadoPostal: "",
+    DireccionResidencial: "",
+    TelefonoResidencial: "",
+
     Email: "",
     Telefono: "",
     Celular: "",
@@ -36,7 +51,7 @@ export const occupationalDataInitialState = {
 }
 
 export const financialProfileDataInitialState = {
-    Supera10MILK: "",
+    IdSupera10MILK: "",
     IdPerfilFinanciero: "",
     ActividadEmpresaNegocio: "",
 }
@@ -50,5 +65,8 @@ export const referencesDataInitialState = {
     RelacionClienteReferenciaPersonal: "",
     TelefonoReferenciaBancaria: "",
     TelefonoReferenciaComercial: "",
-    TelefonoReferenciaPersonal: ""
+    TelefonoReferenciaPersonal: "",
+    ActividadReferenciaBancaria: "",
+    ActividadReferenciaComercial: "",
+    ActividadReferenciaPersonal: "",
 }

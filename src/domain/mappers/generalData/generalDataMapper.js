@@ -6,8 +6,10 @@ export function generalDataAPIToMap(data){
         IdTipoCedula: data["IdTipoCedula"] ? data["IdTipoCedula"].toString() : "",
         Identificacion: data["Identificacion"] ?? "",
         IdSexo: data["IdSexo"] ?? "",
-        Nombres: data["Nombres"] ?? "",
-        Apellido: data["Apellido"] ?? "",
+        Nombres: data["NombresI"] ?? "",
+        NombresSegundo: data["NombresII"] ?? "",
+        Apellido: data["ApellidoI"] ?? "",
+        ApellidoMaterno: data["ApellidoII"] ?? "",
         ApellidoCasada: data["ApellidoCasada"] ?? "",
         RazonSocial: data["RazonSocial"] ?? "",
         FechaNacimiento: data["FechaNacimiento"] ? moment(data["FechaNacimiento"], "DD-MM-YYYY").format("YYYY-MM-DD") : "",
@@ -17,6 +19,8 @@ export function generalDataAPIToMap(data){
         CelularII: data["CelularII"] ?? "",
         IdNacionalidad: data["IdNacionalidad"] ?? "",
         IdEstadoCivil: data["IdEstadoCivil"] ?? "",
+        IdPaisResidencia: data["IdPaisResidencia"] ?? "",
+        CodigoPostal: data["CodigoPostal"] ?? "",
         IdPep: data["IdPep"] ? data["IdPep"].toString() : "",
     }
 }
@@ -39,7 +43,7 @@ export function occupationalDataAPIToMap(data){
         NombreEmpresaNegocio: data["NombreEmpresaNegocio"] ?? "",
         DireccionEmpresaNegocio: data["DireccionEmpresaNegocio"] ?? "",
         TelefonoEmpresaNegocio: data["TelefonoEmpresaNegocio"] ?? "",
-        EmailEmpresa: data["EmailEmpresa"] ?? "",
+        EmailEmpresa: data["EmailAdicional"] ?? "",
     }
 }
 
@@ -54,11 +58,15 @@ export function referencesDataAPIToMap(data){
         TelefonoReferenciaBancaria: data["TelefonoReferenciaBancaria"] ?? "",
         TelefonoReferenciaComercial: data["TelefonoReferenciaComercial"] ?? "",
         TelefonoReferenciaPersonal: data["TelefonoReferenciaPersonal"] ?? "",
+        ActividadReferenciaBancaria: data["ActividadReferenciaBancaria"] ?? "",
+        ActividadReferenciaComercial: data["ActividadReferenciaComercial"] ?? "",
+        ActividadReferenciaPersonal: data["ActividadReferenciaPersonal"] ?? "",
     }
 }
 
 export function financialProfileDataAPIToMap(data){
     return {
+        IdSupera10MILK: data["IdSupera10MILK"] ?? "",
         IdPerfilFinanciero: data['IdPerfilFinanciero'] ?? "",
         ActividadEmpresaNegocio: data['ActividadEmpresaNegocio'] ?? "",
     }
